@@ -1,0 +1,120 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore (Simple)
+  description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+  termsOfService: 'http://helloreverb.com/terms/'
+  contact:
+    name: Swagger API team
+    email: foo@example.com
+    url: 'http://swagger.io'
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+host: api.connector.mbed.com
+schemes:
+  - https
+securityDefinitions:
+  accessKey:
+    type: oauth2
+    name: Authorization
+    in: header
+    flow: accessCode
+security:
+  - accessKey: []
+paths:
+  /endpoints:
+    get:
+      tags:
+        - endpoint
+      description: Returns all endpoints
+      operationId: findEndpoints
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: query
+          description: Filter endpoints by endpoint-type
+          required: false
+          type: string
+      responses:
+        '200':
+          description: endpoints response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/endpoint'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /endpoints/{endpointName}:
+    get:
+      tags:
+        - endpoint
+      description: Returns endpoint given be endpoingName
+      operationId: findEndpoint
+      produces:
+        - application/json
+      parameters:
+        - name: endpointName
+          in: path
+          description: Endpoint name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: endpoint found
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/resource'
+        '400':
+          description: endpoint not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+definitions:
+  endpoint:
+    type: object
+    required:
+      - name
+      - type
+      - status
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      status:
+        type: string
+      q:
+        type: boolean
+  resource:
+    type: object
+    required:
+      - uri
+      - type
+      - obs
+    properties:
+      uri:
+        type: string
+      rt:
+        type: string
+      type:
+        type: string
+      obs:
+        type: boolean
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+

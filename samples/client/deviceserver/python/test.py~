@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+"""A simple python script template.
+"""
+
+import os
+import sys
+sys.path.append(os.getcwd())
+import swagger_client
+
+
+def main():
+    swagger_client.configuration.access_token = "H9YLC6RR89H01I62309O8JO3EBO8NSEQNFORLUUA"
+    print swagger_client.configuration.access_token
+    print swagger_client.configuration.auth_settings()
+    api_client = swagger_client.ApiClient()
+    endpoint_api = swagger_client.EndpointApi(api_client)
+    res = endpoint_api.find_endpoints()
+    print 'hello world'
+    print res
+
+if __name__ == '__main__':
+    sys.exit(main())
